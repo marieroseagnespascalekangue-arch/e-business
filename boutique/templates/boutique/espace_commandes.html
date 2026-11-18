@@ -1,0 +1,28 @@
+{% extends 'boutique/espace_base.html' %}
+{% block titre %}Commandes - Artisanat{% endblock %}
+
+{% block espace %}
+<h1>Mes commandes</h1>
+{% for l in lignes %}
+<div class="cmd">
+  <strong>Commande n° {{ l.commande.pk }}</strong>
+  <span class="etiquette">{{ l.get_statut_livraison_display }}</span>
+  <span class="petit">{{ l.commande.cree_le|date:"d/m/Y H:i" }}</span><br>
+  {{ l.quantite }} × {{ l.nom }} : <span class="prix">{{ l.montant }} FCFA</span><br>
+  <span class="petit">
+    Client : {{ l.commande.nom_client }} · <a href="tel:{{ l.commande.telephone }}">{{ l.commande.telephone }}</a><br>
+    Livraison : {{ l.commande.adresse }}, {{ l.commande.ville }}
+  </span>
+  <form class="formulaire livraison" method="post" action="{% url 'maj_livraison' l.pk %}">
+    {% csrf_token %}
+    <select name="statut" aria-label="Statut de livraison">
+      {% for code, nom in etapes %}<option value="{{ code }}"{% if l.statut_livraison == code %} selected{% endif %}>{{ nom }}</option>{% endfor %}
+    </select>
+    <input type="text" name="note" value="{{ l.note_livraison }}" maxlength="200" placeholder="Note pour le client (livreur, n° de suivi...)" aria-label="Note de livraison">
+    <button class="bouton petit-bouton" type="submit">Mettre à jour</button>
+  </form>
+</div>
+{% empty %}
+<p>Aucune commande payée pour le moment.</p>
+{% endfor %}
+{% endblock %}

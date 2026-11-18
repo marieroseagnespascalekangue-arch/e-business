@@ -1,0 +1,51 @@
+{% extends 'boutique/base.html' %}
+
+{% block titre %}{{ produit.nom_complet }} - Artisanat{% endblock %}
+{% block description %}{{ produit.description|truncatechars:150 }}{% endblock %}
+
+{% block contenu %}
+<article class="produit">
+  <img src="{{ produit.photo.url }}" alt="{{ produit.nom_complet }}" width="800" height="800">
+  <div>
+    <h1>{{ produit.nom }}</h1>
+    <p class="prix">{{ produit.prix_ttc }} FCFA <span class="petit">TTC</span></p>
+
+    {% if variantes|length > 1 %}
+      <p>Couleur : <strong>{{ produit.couleur }}</strong></p>
+      <div class="pastilles">
+        {% for v in variantes %}
+        <a class="pastille{% if v.pk == produit.pk %} actif{% endif %}{% if v.stock == 0 %} epuise{% endif %}"
+           href="{% url 'produit' v.pk %}" style="background:{{ v.fond_couleur }}"
+           aria-label="{{ v.couleur }}{% if v.stock == 0 %} (épuisé){% endif %}" title="{{ v.couleur }}"></a>
+        {% endfor %}
+      </div>
+    {% elif produit.couleur %}
+      <p>Couleur : <strong>{{ produit.couleur }}</strong></p>
+    {% endif %}
+
+    <p class="petit">Vendu par <a href="{% url 'vendeur' produit.vendeur.pk %}">{{ produit.vendeur.nom_boutique }}</a> ({{ produit.vendeur.ville }})</p>
+    <p>{{ produit.description|linebreaksbr }}</p>
+    {% if produit.stock > 0 %}
+      <p class="petit">{{ produit.stock }} en stock</p>
+      <form method="post" action="{% url 'ajouter_panier' produit.pk %}">
+        {% csrf_token %}
+        <p>
+          <label for="quantite">Quantité</label>
+          <input class="qte" id="quantite" type="number" name="quantite" value="1" min="1" max="{{ produit.stock }}" inputmode="numeric">
+        </p>
+        <button class="bouton" type="submit">Ajouter au panier</button>
+      </form>
+    {% else %}
+      <p><strong>Cette couleur est épuisée.</strong></p>
+    {% endif %}
+  </div>
+</article>
+
+{% if suggestions %}
+<h2>Vous aimerez aussi</h2>
+<ul class="grille">
+  {% for p in suggestions %}{% include 'boutique/_carte.html' with paresseux=True %}{% endfor %}
+</ul>
+{% endif %}
+<p><a class="retour" href="{% url 'catalogue' %}">&larr; Retour au catalogue</a></p>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'boutique/base.html' %}
+{% block titre %}Panier - Artisanat{% endblock %}
+
+{% block contenu %}
+<h1>Votre panier</h1>
+{% if lignes %}
+<ul class="lignes">
+  {% for l in lignes %}
+  <li>
+    <div>
+      <strong>{{ l.produit.nom_complet }}</strong><br>
+      <span class="petit">{{ l.produit.prix_ttc }} FCFA l'unité</span>
+      <form class="qte-form" method="post" action="{% url 'modifier_panier' l.produit.pk %}">
+        {% csrf_token %}
+        <input class="qte" type="number" name="quantite" value="{{ l.quantite }}" min="0" max="{{ l.produit.stock }}" inputmode="numeric" aria-label="Quantité de {{ l.produit.nom_complet }}">
+        <button class="bouton petit-bouton" type="submit">Mettre à jour</button>
+      </form>
+    </div>
+    <div class="droite">
+      <span class="prix">{{ l.sous_total }} FCFA</span><br>
+      <form method="post" action="{% url 'retirer_panier' l.produit.pk %}">
+        {% csrf_token %}<button class="lien" type="submit">Retirer</button>
+      </form>
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+<p class="total">Total : {{ total }} FCFA</p>
+<a class="bouton" href="{% url 'commander' %}">Commander</a>
+{% else %}
+<p>Votre panier est vide.</p>
+{% endif %}
+<p><a class="retour" href="{% url 'catalogue' %}">&larr; Continuer mes achats</a></p>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'boutique/base.html' %}
+{% block titre %}Commande confirmée - Artisanat{% endblock %}
+
+{% block contenu %}
+<div class="ok">
+  <h1>Merci {{ commande.nom_client }} !</h1>
+  <p>Commande n° <strong>{{ commande.pk }}</strong> payée : <strong>{{ commande.total }} FCFA</strong>.</p>
+  <p>Livraison à {{ commande.ville }} : {{ commande.adresse }}</p>
+</div>
+<ul class="lignes">
+  {% for l in commande.lignes.all %}
+  <li><span>{{ l.quantite }} × {{ l.nom }}</span><span>{{ l.prix_unitaire }} FCFA</span></li>
+  {% endfor %}
+</ul>
+<p><a class="bouton" href="{% url 'suivi_commande' commande.pk %}">Suivre ma commande</a></p>
+<p><a class="retour" href="{% url 'catalogue' %}">&larr; Retour au catalogue</a></p>
+{% endblock %}

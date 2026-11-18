@@ -1,0 +1,21 @@
+{% extends 'boutique/base.html' %}
+{% block titre %}Connexion - Artisanat{% endblock %}
+
+{% block contenu %}
+<section class="vendeur-entete">
+  <div>
+    <h1>Connexion</h1>
+    <p class="petit">Retrouvez votre profil et vos commandes.</p>
+  </div>
+</section>
+<form class="formulaire" method="post">
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  {% for champ in form %}
+  <p>{{ champ.label_tag }}{{ champ }}{{ champ.errors }}</p>
+  {% endfor %}
+  <input type="hidden" name="next" value="{{ next }}">
+  <button class="bouton" type="submit">Se connecter</button>
+</form>
+<p>Pas encore de compte ? <a href="{% url 'inscription' %}{% if next %}?next={{ next|urlencode }}{% endif %}">Créer un compte</a></p>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'boutique/base.html' %}
+{% block titre %}Paiement en cours - Artisanat{% endblock %}
+{% block tete %}{% if not echec and not erreur %}<meta http-equiv="refresh" content="6">{% endif %}{% endblock %}
+
+{% block contenu %}
+<h1>Paiement en cours</h1>
+<p class="total">{{ commande.total }} FCFA</p>
+{% if echec %}
+<p class="ok">Le paiement n'a pas abouti (refusé, annulé ou délai dépassé).</p>
+<p><a class="bouton" href="{% url 'paiement' %}">Réessayer</a></p>
+{% elif erreur %}
+<p class="ok">{{ erreur }} Votre paiement a peut-être été débité : contactez-nous en indiquant la commande n° {{ commande.pk }}.</p>
+{% else %}
+<p>Une demande de paiement a été envoyée au <strong>{{ commande.numero_paiement }}</strong>.
+Validez-la sur votre téléphone avec votre code secret.</p>
+<p class="petit">Cette page se met à jour toute seule. Ne la fermez pas.</p>
+{% endif %}
+{% endblock %}

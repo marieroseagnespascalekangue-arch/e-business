@@ -1,0 +1,45 @@
+{% extends 'boutique/base.html' %}
+{% block titre %}Mon compte - Artisanat{% endblock %}
+
+{% block contenu %}
+<section class="vendeur-entete">
+  <div class="avatar" aria-hidden="true">{{ user.first_name|default:user.username|slice:":1"|upper }}</div>
+  <div>
+    <h1>Bonjour, {{ user.first_name|default:user.username }}</h1>
+    <p class="petit">Votre profil et vos commandes.</p>
+  </div>
+</section>
+
+{% if messages %}
+<ul class="messages">{% for m in messages %}<li>{{ m }}</li>{% endfor %}</ul>
+{% endif %}
+
+<h2>Mes commandes</h2>
+{% for c in commandes %}
+<div class="cmd">
+  <strong>Commande n° {{ c.pk }}</strong>
+  <span class="etiquette">{{ c.get_statut_display }}</span>
+  <span class="petit">{{ c.cree_le|date:"d/m/Y" }}</span><br>
+  {% for l in c.lignes.all %}{{ l.quantite }} × {{ l.nom }} <span class="petit">({{ l.get_statut_livraison_display }})</span><br>{% endfor %}
+  <span class="prix">{{ c.total }} FCFA</span>
+  {% if c.statut == 'payee' or c.statut == 'livree' %} · <a href="{% url 'suivi_commande' c.pk %}">Suivre ma commande</a>{% endif %}
+</div>
+{% empty %}
+<p>Vous n'avez pas encore de commande.</p>
+{% endfor %}
+
+<h2>Mes informations</h2>
+<form class="formulaire" method="post">
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  {% for champ in form %}
+  <p>{{ champ.label_tag }}{{ champ }}{{ champ.errors }}</p>
+  {% endfor %}
+  <button class="bouton" type="submit">Enregistrer</button>
+</form>
+
+<p><a class="retour" href="{% url 'catalogue' %}">&larr; Retour à la boutique</a></p>
+<form method="post" action="{% url 'deconnexion' %}">
+  {% csrf_token %}<button class="bouton" type="submit">Se déconnecter</button>
+</form>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'boutique/espace_base.html' %}
+{% block titre %}Mon espace - Artisanat{% endblock %}
+
+{% block espace %}
+<section class="vendeur-entete">
+  <div class="avatar" aria-hidden="true">{{ vendeur.nom_boutique|slice:":1"|upper }}</div>
+  <div>
+    <h1>Bonjour, {{ vendeur.nom_boutique }}</h1>
+    <p class="petit">Gérez vos créations et suivez vos ventes.</p>
+  </div>
+</section>
+
+<div class="stats">
+  <div class="stat"><strong>{{ produits|length }}</strong><span class="petit">Créations</span></div>
+  <div class="stat"><strong>{{ ventes }}</strong><span class="petit">Pièces vendues</span></div>
+  <div class="stat"><strong>{{ chiffre }}</strong><span class="petit">FCFA encaissés</span></div>
+</div>
+
+<p><a class="bouton" href="{% url 'ajouter_produit' %}">+ Ajouter un produit</a></p>
+
+<h2>Mes créations</h2>
+{% for p in produits %}
+<div class="ligne-produit">
+  <img src="{{ p.photo.url }}" alt="" width="56" height="56" loading="lazy">
+  <div class="corps">
+    <strong>{{ p.nom }}</strong>
+    {% if p.couleur %}<span class="point" style="background:{{ p.fond_couleur }}"></span> <span class="petit">{{ p.couleur }}</span>{% endif %}<br>
+    <span class="petit">{{ p.prix_ttc }} FCFA TTC · stock {{ p.stock }}</span>
+    {% if not p.actif %}<span class="etiquette">Masqué</span>
+    {% elif p.stock == 0 %}<span class="etiquette alerte">Épuisé</span>
+    {% elif p.stock <= 3 %}<span class="etiquette alerte">Stock bas</span>{% endif %}
+    <div class="actions">
+      <a href="{% url 'modifier_produit' p.pk %}">Modifier</a>
+      <a href="{% url 'ajouter_couleur' p.pk %}">+ Couleur</a>
+      {% if p.actif %}<a href="{% url 'produit' p.pk %}">Voir</a>{% endif %}
+    </div>
+  </div>
+</div>
+{% empty %}
+<p>Vous n'avez pas encore de création. Ajoutez la première !</p>
+{% endfor %}
+{% endblock %}

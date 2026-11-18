@@ -1,0 +1,22 @@
+{% extends 'boutique/base.html' %}
+
+{% block titre %}{{ vendeur.nom_boutique }} - Artisanat{% endblock %}
+
+{% block contenu %}
+<section class="vendeur-entete">
+  <div class="avatar" aria-hidden="true">{{ vendeur.nom_boutique|slice:":1"|upper }}</div>
+  <div>
+    <h1>{{ vendeur.nom_boutique }}</h1>
+    <p class="petit">Artisan à {{ vendeur.ville }} · {{ produits|length }} création{{ produits|length|pluralize }}</p>
+  </div>
+</section>
+
+{% if produits %}
+<ul class="grille">
+  {% for p in produits %}{% include 'boutique/_carte.html' %}{% endfor %}
+</ul>
+{% else %}
+<p>Cette boutique n'a pas encore de création disponible.</p>
+{% endif %}
+<p><a class="retour" href="{% url 'catalogue' %}">&larr; Retour au catalogue</a></p>
+{% endblock %}

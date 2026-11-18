@@ -1,0 +1,28 @@
+{% extends 'boutique/base.html' %}
+{% block titre %}Suivi de la commande {{ commande.pk }} - Artisanat{% endblock %}
+
+{% block tete %}{% if not commande.tout_livre %}<meta http-equiv="refresh" content="30">{% endif %}{% endblock %}
+
+{% block contenu %}
+<h1>Commande n° {{ commande.pk }}</h1>
+<p class="petit">Passée le {{ commande.cree_le|date:"d/m/Y à H:i" }} · <span class="etiquette">{{ commande.get_statut_display }}</span></p>
+<p>Livraison à {{ commande.ville }} : {{ commande.adresse }}</p>
+
+{% for l in commande.lignes.all %}
+<div class="cmd">
+  <strong>{{ l.quantite }} × {{ l.nom }}</strong>
+  <span class="petit">vendu par {{ l.produit.vendeur.nom_boutique }}</span>
+  <ol class="suivi">
+    <li class="fait">Payée</li>
+    <li class="{% if l.etape == 1 %}actuel{% else %}fait{% endif %}">En préparation</li>
+    <li class="{% if l.etape == 2 %}actuel{% elif l.etape > 2 %}fait{% endif %}">Expédiée</li>
+    <li class="{% if l.etape == 3 %}fait{% endif %}">Livrée</li>
+  </ol>
+  {% if l.expediee_le %}<p class="petit">Expédiée le {{ l.expediee_le|date:"d/m/Y" }}</p>{% endif %}
+  {% if l.livree_le %}<p class="petit">Livrée le {{ l.livree_le|date:"d/m/Y" }}</p>{% endif %}
+  {% if l.note_livraison %}<p class="petit">Info du vendeur : {{ l.note_livraison }}</p>{% endif %}
+</div>
+{% endfor %}
+<p class="total">Total : {{ commande.total }} FCFA</p>
+<p><a class="retour" href="{% url 'mon_compte' %}">&larr; Mon compte</a></p>
+{% endblock %}

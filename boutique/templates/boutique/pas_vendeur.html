@@ -1,0 +1,12 @@
+{% extends 'boutique/base.html' %}
+{% block titre %}Espace réservé - Artisanat{% endblock %}
+
+{% block contenu %}
+<h1>Espace réservé aux vendeurs</h1>
+<p>Ce compte n'est pas un compte vendeur. Vous pouvez continuer vos achats sur la boutique.</p>
+<p><a class="bouton" href="{% url 'catalogue' %}">Retour à la boutique</a></p>
+<form method="post" action="{% url 'deconnexion' %}">
+  {% csrf_token %}
+  <p class="petit">Vous avez un compte vendeur ? <button class="lien" type="submit">Changer de compte</button></p>
+</form>
+{% endblock %}

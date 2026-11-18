@@ -1,0 +1,13 @@
+{% extends 'boutique/base.html' %}
+{% block titre %}Commande - Artisanat{% endblock %}
+
+{% block contenu %}
+<h1>Livraison</h1>
+<p class="total">Total : {{ total }} FCFA <span class="petit">({{ lignes|length }} article(s))</span></p>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button class="bouton" type="submit">Continuer vers le paiement</button>
+</form>
+<p><a class="retour" href="{% url 'panier' %}">&larr; Retour au panier</a></p>
+{% endblock %}

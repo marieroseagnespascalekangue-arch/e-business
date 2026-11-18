@@ -1,0 +1,12 @@
+{% extends 'boutique/base.html' %}
+{% block titre %}Compte vendeur - Artisanat{% endblock %}
+
+{% block contenu %}
+<h1>Compte vendeur</h1>
+<p>Les achats se font avec un compte client. Votre compte est un compte vendeur : gérez vos créations depuis votre espace.</p>
+<p><a class="bouton" href="{% url 'espace_vendeur' %}">Mon espace vendeur</a></p>
+<form method="post" action="{% url 'deconnexion' %}">
+  {% csrf_token %}
+  <p class="petit">Pour acheter, <button class="lien" type="submit">connectez-vous avec un compte client</button>.</p>
+</form>
+{% endblock %}

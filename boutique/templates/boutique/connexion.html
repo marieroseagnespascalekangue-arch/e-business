@@ -1,0 +1,29 @@
+{% extends 'boutique/base.html' %}
+{% block titre %}Connexion vendeur - Artisanat{% endblock %}
+
+{% block nav %}<span class="lien-nav">Espace vendeur</span>{% endblock %}
+{% block recherche %}{% endblock %}
+
+{% block contenu %}
+<section class="vendeur-entete">
+  <div>
+    <h1>Espace vendeur</h1>
+    <p class="petit">Connectez-vous pour gérer vos créations.</p>
+  </div>
+</section>
+
+{% if user.vendeur %}
+<p class="ok">Vous êtes actuellement connecté en tant que <strong>{{ user.username }}</strong>.
+Vous pouvez <a href="{% url 'espace_vendeur' %}">retourner à votre espace</a> ou vous connecter avec un autre compte ci-dessous.</p>
+{% endif %}
+
+<form class="formulaire" method="post">
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  {% for champ in form %}
+  <p>{{ champ.label_tag }}{{ champ }}{{ champ.errors }}</p>
+  {% endfor %}
+  <input type="hidden" name="next" value="{{ next }}">
+  <button class="bouton" type="submit">Se connecter</button>
+</form>
+{% endblock %}

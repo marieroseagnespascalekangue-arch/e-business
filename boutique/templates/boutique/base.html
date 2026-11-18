@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block titre %}Artisanat{% endblock %}</title>
+<meta name="description" content="{% block description %}Créations artisanales faites main par nos artisans, livrées chez vous.{% endblock %}">
+<style>
+:root{--vert-fonce:#17472e;--vert:#1f5a3a;--vert-clair:#2e7d4f;--or:#c9a227;--or-clair:#f3e6b3;--creme:#fbf7ec;--texte:#263326;--gris:#5b6b5b}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--texte);background:var(--creme);line-height:1.5}
+h1,h2,.logo{font-family:Georgia,"Times New Roman",serif}
+header{background:linear-gradient(135deg,var(--vert-fonce),var(--vert));border-bottom:3px solid var(--or);padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+header a{color:#fff;text-decoration:none}
+.logo{font-weight:700;font-size:1.3rem}
+.nav{display:flex;gap:10px;align-items:center}
+.lien-nav{font-size:.9rem}
+.panier-lien{font-size:1rem;background:rgba(255,255,255,.16);padding:6px 14px;border-radius:20px}
+main{max-width:960px;margin:0 auto;padding:16px}
+h1{font-size:1.5rem;margin:0 0 12px}
+h2{font-size:1.2rem;margin:28px 0 12px;color:var(--vert-fonce)}
+a{color:var(--vert)}
+.hero{background:linear-gradient(135deg,#e3efdc,var(--or-clair));border-radius:14px;padding:22px 18px;margin-bottom:16px}
+.hero h1{margin:0 0 4px;color:var(--vert-fonce)}
+.hero p{margin:0;color:#2f4a38}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;margin-bottom:12px}
+.chip{white-space:nowrap;padding:6px 14px;border-radius:20px;background:#fff;border:1px solid #d9d2b8;color:var(--vert-fonce);text-decoration:none;font-size:.9rem}
+.chip.actif{background:var(--vert);border-color:var(--vert);color:#fff}
+.grille{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;list-style:none;padding:0;margin:0}
+.carte{display:block;background:#fff;border-radius:12px;overflow:hidden;color:inherit;text-decoration:none;box-shadow:0 1px 4px rgba(23,71,46,.18)}
+.vignette{position:relative}
+.vignette img{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:cover}
+.badge{position:absolute;left:8px;top:8px;background:#fff;color:var(--vert);font-size:.75rem;font-weight:700;padding:2px 8px;border-radius:12px}
+.badge.d{left:auto;right:8px;background:var(--or);color:#3a2e00}
+.infos{padding:10px}
+.prix{font-weight:700;color:var(--vert)}
+.petit{font-size:.85rem;color:var(--gris)}
+.bouton{display:inline-block;background:var(--vert);color:#fff;padding:12px 20px;border-radius:24px;text-decoration:none;font-weight:700;border-bottom:3px solid var(--or)}
+button.bouton{border:0;border-bottom:3px solid var(--or);font-size:1rem;cursor:pointer}
+.pages{display:flex;justify-content:space-between;margin-top:16px}
+.pages a{font-weight:700}
+.produit img{width:100%;height:auto;border-radius:12px}
+.pastilles{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 14px}
+.pastille{width:34px;height:34px;border-radius:50%;border:2px solid #d8d2c0;display:block}
+.pastille.actif{outline:3px solid var(--vert);outline-offset:2px}
+.pastille.epuise{opacity:.35}
+.vendeur-entete{display:flex;gap:14px;align-items:center;background:linear-gradient(135deg,var(--vert-fonce),var(--vert-clair));border-bottom:4px solid var(--or);color:#fff;border-radius:14px;padding:20px 16px;margin-bottom:16px}
+.vendeur-entete h1{margin:0;color:#fff}
+.vendeur-entete .petit{color:var(--or-clair);margin:0}
+.avatar{flex:none;width:60px;height:60px;border-radius:50%;background:var(--or);color:var(--vert-fonce);display:flex;align-items:center;justify-content:center;font:700 1.6rem Georgia,serif;border:3px solid #fff}
+.lignes{list-style:none;padding:0;margin:0 0 12px}
+.lignes li{display:flex;justify-content:space-between;gap:12px;background:#fff;padding:10px;border-radius:12px;margin-bottom:8px}
+.total{font-size:1.2rem;font-weight:700;color:var(--vert-fonce)}
+.lien{background:none;border:0;color:#a00;padding:0;font:inherit;text-decoration:underline;cursor:pointer}
+form p{margin:0 0 12px}
+label{display:block;font-weight:700;margin-bottom:4px}
+input[type=text],textarea{width:100%;padding:10px;font-size:1rem;border:1px solid #bbb;border-radius:6px}
+.errorlist{color:#a00;list-style:none;padding:0;margin:4px 0}
+ul[id^=id_operateur]{list-style:none;padding:0;margin:0}
+ul[id^=id_operateur] label{font-weight:400}
+.ok{background:#e3efdc;border-radius:12px;padding:12px}
+.qte{width:90px;padding:10px;font-size:1rem;border:1px solid #bbb;border-radius:6px}
+.qte-form{display:flex;gap:8px;align-items:center;margin-top:8px}
+.petit-bouton{padding:8px 12px;font-size:.9rem}
+.droite{text-align:right}
+.espace-nav{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.espace-nav form{margin:0}
+button.chip{font:inherit;font-size:.9rem;cursor:pointer}
+.messages{list-style:none;padding:0;margin:0 0 12px}
+.messages li{background:#e3efdc;border-left:4px solid var(--or);padding:8px 12px;border-radius:8px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.stat{background:#fff;border-radius:12px;padding:12px;border-top:3px solid var(--or);text-align:center}
+.stat strong{display:block;font-size:1.3rem;color:var(--vert-fonce)}
+.ligne-produit{display:flex;gap:12px;align-items:center;background:#fff;border-radius:12px;padding:10px;margin-bottom:8px}
+.ligne-produit img{width:56px;height:56px;border-radius:8px;object-fit:cover;flex:none}
+.ligne-produit .corps{flex:1;min-width:0}
+.point{display:inline-block;width:12px;height:12px;border-radius:50%;border:1px solid #bbb;vertical-align:middle}
+.etiquette{font-size:.75rem;padding:2px 8px;border-radius:10px;background:#e3efdc;color:var(--vert-fonce)}
+.etiquette.alerte{background:var(--or-clair);color:#3a2e00}
+.actions{margin-top:4px}
+.actions a{margin-right:12px;font-size:.9rem}
+.formulaire input:not([type=radio]):not([type=checkbox]),.formulaire select,.formulaire textarea{width:100%;padding:10px;font-size:1rem;border:1px solid #bbb;border-radius:6px;background:#fff}
+.choix-couleurs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.choix-couleur{display:flex;align-items:center;gap:6px;font-weight:400;border:1px solid #d9d2b8;background:#fff;padding:4px 12px 4px 8px;border-radius:20px;cursor:pointer;margin:0}
+.choix-couleur input{margin:0}
+.choix-couleur .pastille{width:22px;height:22px;display:inline-block}
+.cmd{background:#fff;border-radius:12px;padding:12px;margin-bottom:8px}
+footer{text-align:center;color:var(--gris);font-size:.85rem;padding:24px 16px;border-top:1px solid #e6dfc6;margin-top:24px}
+@media(min-width:640px){.grille{grid-template-columns:repeat(3,1fr)}.produit{display:grid;grid-template-columns:1fr 1fr;gap:24px}}
+header{flex-wrap:wrap;row-gap:8px}
+.recherche{order:3;flex:1 1 100%;display:flex;gap:6px}
+.recherche input{flex:1;min-width:0;padding:9px 14px;border:0;border-radius:20px;font-size:1rem}
+.recherche button{border:0;border-radius:20px;padding:9px 16px;background:var(--or);color:#3a2e00;font-weight:700;font-size:.95rem;cursor:pointer}
+.suivi{list-style:none;display:flex;gap:6px;padding:0;margin:10px 0}
+.suivi li{flex:1;text-align:center;font-size:.8rem;padding:6px 4px;border-radius:8px;background:#ece7d6;color:var(--gris)}
+.suivi li.fait{background:var(--vert);color:#fff}
+.suivi li.actuel{background:var(--or);color:#3a2e00;font-weight:700}
+.livraison{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.recherche{gap:4px;max-width:520px}
+.recherche input{padding:6px 12px;font-size:.9rem}
+.recherche button{padding:6px 12px;font-size:.85rem}
+.retour{display:inline-block;margin:16px 0;padding:8px 18px;border:1.5px solid var(--vert);border-radius:20px;background:#fff;color:var(--vert);text-decoration:none;font-weight:600;font-size:.9rem}
+.retour:hover,.retour:focus-visible{background:var(--vert);color:#fff}
+@media(min-width:640px){.recherche{order:2;flex:1 1 auto;max-width:380px;margin:0 16px}.nav{order:3}}
+</style>
+{% block tete %}{% endblock %}</head>
+<body>
+<header><a class="logo" href="{% url 'catalogue' %}">Artisanat</a><span class="nav">{% block nav %}{% if user.is_staff %}<a class="lien-nav" href="{% url 'admin:index' %}">Administration</a>{% endif %}{% if user.is_authenticated %}{% if user.vendeur and not user.is_staff %}<a class="lien-nav" href="{% url 'espace_vendeur' %}">Mon espace vendeur</a>{% else %}<a class="lien-nav" href="{% url 'mon_compte' %}">Mon compte</a>{% endif %}{% else %}<a class="lien-nav" href="{% url 'connexion_client' %}">Connexion</a>{% endif %}{% if not user.vendeur or user.is_staff %}<a class="panier-lien" href="{% url 'panier' %}">Panier</a>{% endif %}{% endblock %}</span>{% block recherche %}<form class="recherche" action="{% url 'catalogue' %}" method="get" role="search"><input type="search" name="q" value="{{ request.GET.q }}" placeholder="Rechercher un produit" aria-label="Rechercher un produit" maxlength="80"><button type="submit">Chercher</button></form>{% endblock %}</header>
+<main>
+{% block contenu %}{% endblock %}
+</main>
+<footer>Fait main avec passion par nos artisans. Paiement Mobile Money et livraison.</footer>
+</body>
+</html>

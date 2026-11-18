@@ -1,0 +1,14 @@
+<li>
+  <a class="carte" href="{% url 'produit' p.pk %}">
+    <div class="vignette">
+      <img src="{{ p.photo.url }}" alt="{{ p.nom_complet }}" width="400" height="400"{% if paresseux or not forloop.first %} loading="lazy"{% endif %}>
+      {% if p.nb_couleurs > 1 %}<span class="badge">{{ p.nb_couleurs }} couleurs</span>{% endif %}
+      {% if p.stock <= 3 %}<span class="badge d">Dernières pièces</span>{% endif %}
+    </div>
+    <div class="infos">
+      <strong>{{ p.nom }}</strong><br>
+      <span class="prix">{{ p.prix_ttc }} FCFA</span><br>
+      <span class="petit">{{ p.vendeur.nom_boutique }}</span>
+    </div>
+  </a>
+</li>

@@ -1,0 +1,28 @@
+{% extends 'boutique/espace_base.html' %}
+{% block titre %}{{ titre }} - Artisanat{% endblock %}
+
+{% block espace %}
+<h1>{{ titre }}</h1>
+{% if aide %}<p class="petit">{{ aide }}</p>{% endif %}
+
+<form class="formulaire" method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  {% for champ in form %}
+    {% if champ.name == 'couleur' %}
+      <p><strong>Couleur</strong> <span class="petit">(si l'article existe en plusieurs couleurs)</span></p>
+      <div class="choix-couleurs">
+        <label class="choix-couleur"><input type="radio" name="couleur" value=""{% if not champ.value %} checked{% endif %}> Aucune</label>
+        {% for c in couleurs %}
+        <label class="choix-couleur"><input type="radio" name="couleur" value="{{ c.nom }}"{% if champ.value == c.nom %} checked{% endif %}><span class="pastille" style="background:{{ c.fond }}"></span> {{ c.nom }}</label>
+        {% endfor %}
+      </div>
+      {{ champ.errors }}
+    {% else %}
+      <p>{{ champ.label_tag }}{{ champ }}{% if champ.help_text %}<span class="petit">{{ champ.help_text }}</span>{% endif %}{{ champ.errors }}</p>
+    {% endif %}
+  {% endfor %}
+  <button class="bouton" type="submit">Enregistrer</button>
+</form>
+<p><a class="retour" href="{% url 'espace_vendeur' %}">&larr; Retour au tableau de bord</a></p>
+{% endblock %}

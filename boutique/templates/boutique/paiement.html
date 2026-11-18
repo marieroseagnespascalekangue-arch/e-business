@@ -1,0 +1,18 @@
+{% extends 'boutique/base.html' %}
+{% block titre %}Paiement - Artisanat{% endblock %}
+
+{% block contenu %}
+<h1>Paiement Mobile Money</h1>
+<p class="total">À payer : {{ commande.total }} FCFA</p>
+<form class="formulaire" method="post">
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  {{ form.as_p }}
+  <button class="bouton" type="submit">Payer</button>
+</form>
+{% if mode_reel %}
+<p class="petit">Après avoir cliqué sur « Payer », une demande de confirmation arrive sur votre téléphone : validez-la avec votre code secret.</p>
+{% else %}
+<p class="petit">Mode démonstration : aucun argent réel n'est prélevé.</p>
+{% endif %}
+{% endblock %}

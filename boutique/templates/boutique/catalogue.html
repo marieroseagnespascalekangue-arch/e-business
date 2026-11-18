@@ -1,0 +1,37 @@
+{% extends 'boutique/base.html' %}
+
+{% block titre %}{% if recherche %}Recherche : {{ recherche }} - Artisanat{% else %}Catalogue - Artisanat{% endif %}{% endblock %}
+
+{% block contenu %}
+{% if recherche %}
+<h1>Résultats pour « {{ recherche }} »</h1>
+<p class="petit">{{ nb_resultats }} article{{ nb_resultats|pluralize }} trouvé{{ nb_resultats|pluralize }}. <a href="{% url 'catalogue' %}">Effacer la recherche</a></p>
+{% else %}
+<section class="hero">
+  <h1>Fait main, livré chez vous</h1>
+  <p>Découvrez les créations de nos artisans et payez par Mobile Money.</p>
+</section>
+{% endif %}
+
+{% if categories %}
+<nav class="chips" aria-label="Catégories">
+  <a class="chip{% if not categorie_active %} actif{% endif %}" href="{% url 'catalogue' %}">Tout</a>
+  {% for c in categories %}
+  <a class="chip{% if c.pk == categorie_active %} actif{% endif %}" href="?categorie={{ c.pk }}">{{ c.nom }}</a>
+  {% endfor %}
+</nav>
+{% endif %}
+
+{% if page.object_list %}
+<ul class="grille">
+  {% for p in page %}{% include 'boutique/_carte.html' %}{% endfor %}
+</ul>
+
+<div class="pages">
+  {% if page.has_previous %}<a href="?page={{ page.previous_page_number }}{% if categorie_active %}&amp;categorie={{ categorie_active }}{% endif %}{% if recherche %}&amp;q={{ recherche|urlencode }}{% endif %}">&larr; Précédent</a>{% else %}<span></span>{% endif %}
+  {% if page.has_next %}<a href="?page={{ page.next_page_number }}{% if categorie_active %}&amp;categorie={{ categorie_active }}{% endif %}{% if recherche %}&amp;q={{ recherche|urlencode }}{% endif %}">Suivant &rarr;</a>{% endif %}
+</div>
+{% else %}
+<p>{% if recherche %}Aucun produit ne correspond à « {{ recherche }} ». Essayez un autre mot.{% else %}Aucun produit disponible pour le moment.{% endif %}</p>
+{% endif %}
+{% endblock %}

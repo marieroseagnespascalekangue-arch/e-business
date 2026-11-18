@@ -1,0 +1,20 @@
+{% extends 'boutique/base.html' %}
+
+{% block nav %}<span class="lien-nav">Espace vendeur</span>{% endblock %}
+{% block recherche %}{% endblock %}
+
+{% block contenu %}
+<nav class="espace-nav" aria-label="Espace vendeur">
+  <a class="chip" href="{% url 'espace_vendeur' %}">Tableau de bord</a>
+  <a class="chip" href="{% url 'commandes_vendeur' %}">Commandes</a>
+  <a class="chip" href="{% url 'vendeur' vendeur.pk %}">Ma boutique en ligne</a>
+  <a class="chip" href="{% url 'catalogue' %}">Voir le site (client)</a>
+  <form method="post" action="{% url 'deconnexion' %}">
+    {% csrf_token %}<button class="chip" type="submit">Déconnexion</button>
+  </form>
+</nav>
+{% if messages %}
+<ul class="messages">{% for m in messages %}<li>{{ m }}</li>{% endfor %}</ul>
+{% endif %}
+{% block espace %}{% endblock %}
+{% endblock %}
